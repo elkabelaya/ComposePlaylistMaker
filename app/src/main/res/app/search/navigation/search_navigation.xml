@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/search_navigation"
+app:startDestination="@id/search_fragment">
+    <include app:graph="@navigation/player_navigation"/>
+    <fragment
+        android:id="@+id/search_fragment"
+        android:name="com.elkabelaya.playlistmaker.search.presentation.SearchFragment"
+        android:label="fragment_player"
+        tools:layout="@layout/fragment_search">
+    <action
+        android:id="@+id/action_search_playerFragment"
+        app:destination="@id/player_navigation"
+        app:popUpTo="@id/search_fragment"
+        style="@style/NavigationAnimation"
+        app:launchSingleTop="true" />
+    </fragment>
+</navigation>

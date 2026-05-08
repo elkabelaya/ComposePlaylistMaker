@@ -1,0 +1,3 @@
+package com.elkabelaya.playlistmaker.media.domain.repository
+
+interface MediaPlaylistsErrorRepository: MediaErrorRepository

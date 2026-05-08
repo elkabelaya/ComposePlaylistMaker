@@ -1,0 +1,45 @@
+package com.elkabelaya.playlistmaker.common.data.mapper
+
+import com.elkabelaya.playlistmaker.common.data.db.TrackEntity
+import com.elkabelaya.playlistmaker.common.data.db.TrackFavoriteEntity
+import com.elkabelaya.playlistmaker.common.data.repository.TracksDbMapper
+import com.elkabelaya.playlistmaker.common.domain.model.Track
+
+class TracksDbMapperImpl: TracksDbMapper {
+    val timeMapper = TimeMapper()
+    override fun map(track: Track): TrackEntity {
+        return TrackEntity(
+            trackId = track.trackId,
+            trackName = track.trackName,
+            artistName = track.artistName,
+            trackTime = timeMapper.map(track.trackTime),
+            imageUrl = track.imageUrl,
+            coverUrl = track.coverUrl,
+            collectionName = track.collectionName,
+            year = track.year,
+            primaryGenreName = track.primaryGenreName,
+            country = track.country,
+            previewUrl = track.previewUrl
+        )
+    }
+
+    override fun mapFavorite(track: Track): TrackFavoriteEntity {
+        return TrackFavoriteEntity(trackId = track.trackId)
+    }
+
+    override fun map(entity: TrackEntity): Track {
+        return Track(
+            entity.trackId,
+            entity.trackName,
+            entity.artistName,
+            timeMapper.map(entity.trackTime),
+            entity.imageUrl,
+            entity.coverUrl,
+            entity.collectionName,
+            entity.year,
+            entity.primaryGenreName,
+            entity.country,
+            entity.previewUrl
+        )
+    }
+}

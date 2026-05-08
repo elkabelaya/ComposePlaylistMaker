@@ -1,0 +1,27 @@
+package com.elkabelaya.playlistmaker.media.domain.impl
+
+import com.elkabelaya.playlistmaker.common.domain.model.ErrorState
+import com.elkabelaya.playlistmaker.common.domain.model.Tracks
+import com.elkabelaya.playlistmaker.common.domain.repository.FavoriteTracksRepository
+import com.elkabelaya.playlistmaker.media.domain.api.MediaFavoritesInteractor
+import com.elkabelaya.playlistmaker.media.domain.model.MediaFavoritesState
+import com.elkabelaya.playlistmaker.media.domain.repository.MediaFavoritesErrorRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+
+class MediaFavoritesInteractorImpl(
+    private val repository: FavoriteTracksRepository,
+    private val errorRepository: MediaFavoritesErrorRepository
+): MediaFavoritesInteractor {
+
+    override suspend fun getFracks(): Flow<Pair<Tracks?, ErrorState?>> = flow {
+        repository.get()
+            .collect { tracks ->
+                if (tracks.isEmpty()) {
+                    emit(Pair(null, ErrorState.Empty(errorRepository.getErrorText())))
+                } else {
+                    emit(Pair(tracks, null))
+                }
+            }
+    }
+}

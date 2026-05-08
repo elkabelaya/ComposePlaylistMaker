@@ -1,0 +1,69 @@
+package com.elkabelaya.playlistmaker.media.presentation
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.fragment.app.Fragment
+import com.elkabelaya.playlistmaker.R
+import com.elkabelaya.playlistmaker.common.presentation.Dimens
+import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
+import com.elkabelaya.playlistmaker.common.presentation.components.TopAppBar
+import com.elkabelaya.playlistmaker.common.presentation.utils.FragmentWithToolBar
+import com.elkabelaya.playlistmaker.databinding.FragmentMediaBinding
+import com.elkabelaya.playlistmaker.media.di.mediaModules
+import com.elkabelaya.playlistmaker.media.domain.model.MediaTabType
+import com.elkabelaya.playlistmaker.media.presentation.favorites.ComposeMediaFavorites
+import com.elkabelaya.playlistmaker.media.presentation.playlists.ComposeMediaPlaylists
+import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.GlobalContext.unloadKoinModules
+import org.koin.core.context.loadKoinModules
+
+class MediaFragment : Fragment() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        loadKoinModules(mediaModules)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?): View = ComposeView(requireContext()).apply {
+            setContent { ComposeMedia() }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unloadKoinModules(mediaModules)
+    }
+}
+

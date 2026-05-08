@@ -1,0 +1,18 @@
+package com.elkabelaya.playlistmaker.common.presentation
+
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.elkabelaya.playlistmaker.common.domain.model.Track
+
+class TracksAdapter (val onClickItem: (Track) -> Unit, val onLongClickItem: ((Track) -> Unit)? = null) : RecyclerView.Adapter<TrackViewHolder> () {
+    var tracks: List<Track> = emptyList()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
+        return TrackViewHolder.from(parent)
+    }
+
+    override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
+        holder.bind(tracks[position], onClickItem, onLongClickItem)
+    }
+
+    override fun getItemCount() = tracks.size
+}
