@@ -40,6 +40,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.elkabelaya.playlistmaker.R
+import com.elkabelaya.playlistmaker.common.presentation.AppTheme
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
 import com.elkabelaya.playlistmaker.common.presentation.components.ComposeSwitch
@@ -70,7 +71,11 @@ class SettingsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View = ComposeView(requireContext()).apply {
-        setContent { ComposeSettings(viewModel) }
+        setContent {
+            AppTheme {
+                ComposeSettings(viewModel)
+            }
+        }
     }
 
 

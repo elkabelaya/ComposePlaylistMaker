@@ -27,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.elkabelaya.playlistmaker.R
+import com.elkabelaya.playlistmaker.common.presentation.AppScreen
+import com.elkabelaya.playlistmaker.common.presentation.AppTheme
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
 import com.elkabelaya.playlistmaker.common.presentation.components.ComposeSwitch
@@ -36,14 +38,10 @@ import com.elkabelaya.playlistmaker.settings.presentation.preview.ComposeSetting
 @Composable
 fun ComposeSettings(viewModel:SettingsViewModel) {
     val isDark by viewModel.isDarkMode.collectAsState()
-    Scaffold(
-        containerColor = colorResource(R.color.background),
-        topBar = {TopAppBar(title = stringResource(id = R.string.main_settings))}
-    ) { innerPadding ->
+    AppScreen(R.string.main_settings){
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
         ) {
             NightModeSwitch(
                 checked = isDark,
@@ -138,5 +136,7 @@ fun SettingsButton(
 fun ComposeSettingsPreview(
     @PreviewParameter(ComposeSettingsPreviewProvider::class) model: SettingsViewModel
 ) {
-    ComposeSettings(model)
+    AppTheme {
+        ComposeSettings(model)
+    }
 }

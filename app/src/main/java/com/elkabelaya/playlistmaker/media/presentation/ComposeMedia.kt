@@ -22,6 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.elkabelaya.playlistmaker.R
+import com.elkabelaya.playlistmaker.common.presentation.AppScreen
+import com.elkabelaya.playlistmaker.common.presentation.AppTheme
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
 import com.elkabelaya.playlistmaker.common.presentation.components.TopAppBar
@@ -35,14 +37,10 @@ fun ComposeMedia() {
     val pagerState = rememberPagerState(pageCount = { 2 })
     val scope = rememberCoroutineScope()
 
-    Scaffold(
-        containerColor = colorResource(R.color.background),
-        topBar = {TopAppBar(title = stringResource(id = R.string.main_media))}
-    ) { innerPadding ->
+    AppScreen(R.string.main_media){
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
         ) {
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
@@ -92,5 +90,7 @@ fun ComposeMedia() {
 @Preview
 @Composable
 fun ComposeMediaPreview() {
-    ComposeMedia()
+    AppTheme {
+        ComposeMedia()
+    }
 }

@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.elkabelaya.playlistmaker.R
 import com.elkabelaya.playlistmaker.common.domain.model.Track
+import com.elkabelaya.playlistmaker.common.presentation.AppScreen
 import com.elkabelaya.playlistmaker.common.presentation.AppTheme
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
@@ -35,16 +36,9 @@ import com.elkabelaya.playlistmaker.search.presentation.preview.ComposeSearchPre
 @Composable
 fun ComposeSearch(viewModel: SearchViewModel) {
     val state by viewModel.state.collectAsState()
-    Scaffold(
-        containerColor = AppTheme.colors.background,
-        topBar = { TopAppBar(
-            stringResource(R.string.main_search)
-        )
-        }
-    ) { innerPadding ->
+    AppScreen(R.string.main_search){ ->
         Column(modifier = Modifier
             .fillMaxSize()
-            .padding(innerPadding)
         ) {
 
             SearchBar(
@@ -134,6 +128,8 @@ fun LoadingContent() {
 fun ComposeSearchPreview(
     @PreviewParameter(ComposeSearchPreviewProvider::class) model: SearchViewModel
 ) {
-    ComposeSearch(model)
+    AppTheme {
+        ComposeSearch(model)
+    }
 }
 
