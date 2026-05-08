@@ -21,13 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.elkabelaya.playlistmaker.R
+import com.elkabelaya.playlistmaker.common.presentation.AppTheme
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 
 @Composable
@@ -42,7 +42,7 @@ fun SearchBar(
     BasicTextField(//can set custom contentPadding only in BasicTextField
         value = query,
         onValueChange = onQueryChanged,
-        cursorBrush = SolidColor(colorResource(R.color.yp_blue)),
+        cursorBrush = SolidColor(AppTheme.colors.accent),
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
@@ -64,7 +64,7 @@ fun SearchBar(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_search),
                         contentDescription = null,
-                        tint = colorResource(id = R.color.hint_search),
+                        tint = AppTheme.colors.hintSearch,
                         modifier = Modifier.size(Dimens.iconM)
                     )
                 },
@@ -77,7 +77,7 @@ fun SearchBar(
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_close),
                                 contentDescription = null,
-                                tint = colorResource(id = R.color.hint_search),
+                                tint = AppTheme.colors.hintSearch,
                                 modifier = Modifier.size(Dimens.iconM)
                             )
                         }
@@ -93,19 +93,19 @@ fun SearchBar(
                 interactionSource = remember { MutableInteractionSource() },
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
                 colors = TextFieldDefaults.colors(
-                    focusedTextColor = colorResource(id = R.color.text_search),
-                    unfocusedTextColor = colorResource(id = R.color.text_search),
-                    focusedContainerColor = colorResource(id = R.color.background_search),
-                    unfocusedContainerColor = colorResource(id = R.color.background_search),
-                    cursorColor = colorResource(id = R.color.yp_blue),
+                    focusedTextColor = AppTheme.colors.textSearch,
+                    unfocusedTextColor = AppTheme.colors.textSearch,
+                    focusedContainerColor = AppTheme.colors.backgroundSecondary,
+                    unfocusedContainerColor = AppTheme.colors.backgroundSecondary,
+                    cursorColor = AppTheme.colors.accent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    focusedLeadingIconColor = colorResource(id = R.color.hint_search),
-                    unfocusedLeadingIconColor = colorResource(id = R.color.hint_search),
-                    focusedTrailingIconColor = colorResource(id = R.color.hint_search),
-                    unfocusedTrailingIconColor = colorResource(id = R.color.hint_search),
-                    focusedPlaceholderColor = colorResource(id = R.color.hint_search),
-                    unfocusedPlaceholderColor = colorResource(id = R.color.hint_search),
+                    focusedLeadingIconColor = AppTheme.colors.hintSearch,
+                    unfocusedLeadingIconColor = AppTheme.colors.hintSearch,
+                    focusedTrailingIconColor = AppTheme.colors.hintSearch,
+                    unfocusedTrailingIconColor = AppTheme.colors.hintSearch,
+                    focusedPlaceholderColor = AppTheme.colors.hintSearch,
+                    unfocusedPlaceholderColor = AppTheme.colors.hintSearch,
                 ),
             )
         },

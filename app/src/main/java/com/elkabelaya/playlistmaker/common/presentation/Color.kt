@@ -1,34 +1,60 @@
 package com.elkabelaya.playlistmaker.common.presentation
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+data class ColorPalette(
+    val accent: Color,
+    val background: Color,
+    val backgroundSecondary: Color,
+    val textTitle: Color,
+    val text: Color,
+    val textSecondary: Color,
+    val hintSearch: Color,
+    val textSearch: Color,
+    val textInverted: Color,
+    val backgroundInverted: Color,
+    val switchThumb: Color,
+    val switchTrack: Color,
+)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+private val ypBlack          = Color(0xFF1A1B22)
+private val ypBlack25        = Color(0x801A1B22)
+private val ypWhite          = Color(0xFFFFFFFF)
+private val ypWhite25        = Color(0x40FFFFFF)
+private val ypBlue           = Color(0xFF3772E7)
+private val ypBlueLight      = Color(0xFF9FBBF3)
+private val ypTextGray       = Color(0xFFAEAFB4)
+private val ypLightGray      = Color(0xFFE6E8EB)
+private val ypBackground     = Color(0x801A1B22)
+private val defaultSwitch         = Color(0xFF00D6C3)
+private val defaultSwitchLight    = Color(0xFF76EAE0)
 
-    val ypBlack          = Color(0xFF1A1B22)
-    val ypBlack25        = Color(0x801A1B22)   // 40% opacity (alpha = 0x40)
+val lightPalette = ColorPalette(
+    accent = ypBlue,
+    background = Color.White,
+    backgroundSecondary = ypLightGray,//background_search
+    backgroundInverted = ypBlack,
+    textTitle = ypBlack,//textToolbar
+    text = Color.Black,
+    textSecondary = ypTextGray,
+    hintSearch = ypTextGray,
+    textSearch = ypBlack,
+    textInverted = ypWhite,
 
-    val ypWhite          = Color(0xFFFFFFFF)
-    val ypWhite25        = Color(0x40FFFFFF)   // 25% opacity (alpha = 0x40)
+    switchThumb = defaultSwitch,
+    switchTrack = defaultSwitchLight
+)
 
-    val ypBlue           = Color(0xFF3772E7)
-    val ypBlueLight      = Color(0xFF9FBBF3)
-
-    // Typography / neutral
-    val ypTextGray       = Color(0xFFAEAFB4)
-    val ypLightGray      = Color(0xFFE6E8EB)
-
-    // Background
-    val ypBackground     = Color(0x801A1B22)   // 50% opacity (alpha = 0x80)
-
-    // System / fallback
-    val black            = Color(0xFF000000)
-    val white            = Color(0xFFFFFFFF)
-
-    // Switch (toggle) colors
-    val defaultSwitch         = Color(0xFF00D6C3)
-    val defaultSwitchLight    = Color(0xFF76EAE0)
+val darkPalette = ColorPalette(
+    accent = ypBlue,
+    background = ypBlack,
+    backgroundSecondary = ypWhite,
+    backgroundInverted = ypBlack,
+    textTitle = ypWhite,
+    text = ypWhite,
+    textSecondary = ypWhite,
+    hintSearch = ypBlack,
+    textSearch = ypBlack,
+    textInverted = ypBlack,
+    switchThumb = ypBlue,
+    switchTrack = ypBlueLight
+)

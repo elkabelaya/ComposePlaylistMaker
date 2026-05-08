@@ -14,7 +14,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.elkabelaya.playlistmaker.R
 import com.elkabelaya.playlistmaker.common.domain.model.Track
+import com.elkabelaya.playlistmaker.common.presentation.AppTheme
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
 import com.elkabelaya.playlistmaker.common.presentation.components.ComposeErrorView
@@ -36,7 +36,7 @@ import com.elkabelaya.playlistmaker.search.presentation.preview.ComposeSearchPre
 fun ComposeSearch(viewModel: SearchViewModel) {
     val state by viewModel.state.collectAsState()
     Scaffold(
-        containerColor = colorResource(R.color.background),
+        containerColor = AppTheme.colors.background,
         topBar = { TopAppBar(
             stringResource(R.string.main_search)
         )
@@ -105,7 +105,7 @@ fun HistoryContent(tracks: List<Track>, select:(Track) -> Unit, onClick: ()-> Un
             fontFamily = appFontFamily,
             fontWeight = FontWeight.Normal,
             fontSize = Dimens.textL,
-            color = colorResource(id = R.color.text_title)
+            color = AppTheme.colors.textTitle
         )
         TrackItemList(tracks, select)
         ActionButton(
@@ -123,7 +123,7 @@ fun LoadingContent() {
         CircularProgressIndicator(modifier = Modifier
             .padding(top = Dimens.padding10XL)
             .align(alignment = Alignment.TopCenter),
-            color = colorResource(R.color.yp_blue)
+            color = AppTheme.colors.accent
 
         )
     }

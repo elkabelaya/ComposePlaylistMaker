@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.elkabelaya.playlistmaker.R
 import com.elkabelaya.playlistmaker.common.domain.model.Track
+import com.elkabelaya.playlistmaker.common.presentation.AppTheme
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
 import com.elkabelaya.playlistmaker.common.presentation.components.ComposeErrorView
@@ -55,7 +56,11 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = ComposeView(requireContext()).apply {
-        setContent { ComposeSearch(viewModel) }
+        setContent {
+            AppTheme {
+                ComposeSearch(viewModel)
+            }
+        }
     }
 
     override fun onDestroy() {
