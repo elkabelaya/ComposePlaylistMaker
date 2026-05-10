@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -90,16 +91,13 @@ fun HistoryContent(tracks: List<Track>, select:(Track) -> Unit, onClick: ()-> Un
     Column(modifier = Modifier.fillMaxSize()) {
         Text(
             text = stringResource(R.string.search_history),
-            //style = MaterialTheme.typography.subtitle1,
+            style = AppTheme.typography.titleXLMedium,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = Dimens.paddingS, top = Dimens.padding7XL)
             ,
-            textAlign = TextAlign.Center,
-            fontFamily = appFontFamily,
-            fontWeight = FontWeight.Normal,
-            fontSize = Dimens.textL,
-            color = AppTheme.colors.textTitle
+            //textAlign = TextAlign.Center,//?
+            //color = AppTheme.colors.textTitle//?
         )
         TrackItemList(tracks, select)
         ActionButton(
@@ -118,7 +116,6 @@ fun LoadingContent() {
             .padding(top = Dimens.padding10XL)
             .align(alignment = Alignment.TopCenter),
             color = AppTheme.colors.accent
-
         )
     }
 }
