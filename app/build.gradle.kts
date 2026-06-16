@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.ui)
+    implementation(libs.androidx.compose.runtime)
     testImplementation(libs.junit)
 
     implementation(libs.androidx.activity.compose)

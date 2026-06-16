@@ -15,23 +15,26 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class EditPlaylistViewModelImpl(
     val interactor: EditPlayListInteractor,
      initialPlaylist: Playlist?
 ): EditPlaylistViewModel() {
-    private val stateLiveData: MutableLiveData<EditPlaylistState> = MutableLiveData(EditPlaylistState(initialPlaylist != null, initialPlaylist == null))
-    override fun observeState(): LiveData<EditPlaylistState> = stateLiveData
+    private val _state = MutableStateFlow(EditPlaylistState(initialPlaylist != null, initialPlaylist == null))
+    override var state: StateFlow<EditPlaylistState> = _state.asStateFlow()
+    private val _mode = MutableStateFlow(if (initialPlaylist == null) EditPlaylistMode.NEW else EditPlaylistMode.EDIT)
+    override var mode: StateFlow<EditPlaylistMode> = _mode.asStateFlow()
 
-    private val imageLiveData: MutableLiveData<String?> = MutableLiveData(null)
-    override fun observeImage(): LiveData<String?> = imageLiveData
+    private  var _playList: MutableStateFlow<Playlist?> = MutableStateFlow(null)
+    override var playList: StateFlow<Playlist?> = _playList.asStateFlow()
 
-    private val modeLiveData = MutableLiveData(if (initialPlaylist == null) EditPlaylistMode.NEW else EditPlaylistMode.EDIT)
-    override fun observeMode(): LiveData<EditPlaylistMode> = modeLiveData
+    private  var _image: MutableStateFlow<String?> = MutableStateFlow(null)
+    override var image: StateFlow<String?> = _image.asStateFlow()
 
-    private val playlistLiveData: MutableLiveData<Playlist> = MutableLiveData()
-    override fun observePlayList(): LiveData<Playlist> = playlistLiveData
 
     var isSaved: Boolean = initialPlaylist != null
 
@@ -40,35 +43,28 @@ class EditPlaylistViewModelImpl(
             viewModelScope.launch(Dispatchers.IO) {
                 val id = interactor.initiate()
                 viewModelScope.launch(Dispatchers.Main) {
-                    playlistLiveData.value = Playlist.empty().copy(id = id)
+                    _playList.value = Playlist.empty().copy(id = id)
                 }
             }
         } else {
-            playlistLiveData.postValue(initialPlaylist)
-            imageLiveData.postValue(initialPlaylist.coverUrl)
+            _playList.value = initialPlaylist
+            _image.value = initialPlaylist.coverUrl
         }
 
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onCleared() {
         super.onCleared()
-        if (!isSaved) {
-            playlistLiveData.value?.let {
-                GlobalScope.launch(Dispatchers.IO) {
-                    interactor.delete(it)
-                }
-            }
-        }
+        dispose()
     }
 
     override fun save() {
         isSaved = true
-        playlistLiveData.value?.let {
+        _playList.value?.let {
             var playlist = it
             viewModelScope.launch(Dispatchers.IO) {
                 var savedUrl: String? = null
-                imageLiveData.value?.let { imageUrl ->
+                _image.value?.let { imageUrl ->
                     if (imageUrl != playlist.coverUrl) {
                         savedUrl = interactor.addCover(imageUrl.toUri(), playlist.id)
                         playlist = playlist.copy(coverUrl = savedUrl)
@@ -79,31 +75,39 @@ class EditPlaylistViewModelImpl(
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
+    override fun dispose() {
+        if (!isSaved) {
+            _playList.value?.let {
+                GlobalScope.launch(Dispatchers.IO) {
+                    interactor.delete(it)
+                }
+            }
+        }
+    }
+
     override fun addImage(uri:Uri?) {
-        imageLiveData.postValue(uri.toString())
+        _image.value = uri.toString()
     }
 
     override fun changeName(name: String) {
-        playlistLiveData.value?.let {
+        _playList.value?.let {
             val newName = name.trim()
-            playlistLiveData.postValue(it.copy(name = name.trim()))
-            stateLiveData.postValue(
-                stateLiveData.value?.copy(
+            _playList.value = it.copy(name = name.trim())
+            _state.value = _state.value.copy(
                     isSaveEnabled = !newName.isEmpty(),
                     needDialog = needDialog()
                 )
-            )
         }
     }
 
     override fun changeDescription(description: String) {
-        playlistLiveData.value?.let {
-            playlistLiveData.postValue(it.copy(description = description.trim()))
-            stateLiveData.postValue(
-                stateLiveData.value?.copy(
+        _playList.value?.let {
+            _playList.value = it.copy(description = description.trim())
+            _state.value = _state.value.copy(
                     needDialog = needDialog()
                 )
-            )
+
         }
     }
 
@@ -112,10 +116,10 @@ class EditPlaylistViewModelImpl(
     }
 
     private fun hasAnyData(): Boolean {
-        playlistLiveData.value?.let {
+        _playList.value?.let {
             return it.name.isNotEmpty() or
                     (it.description?.isNotEmpty() == true) or
-                    (imageLiveData.value?.isNotEmpty() == true)
+                    (_image.value?.isNotEmpty() == true)
         }
         return false
     }

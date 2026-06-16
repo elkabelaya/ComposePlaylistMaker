@@ -10,7 +10,12 @@ import androidx.navigation.fragment.findNavController
 import com.elkabelaya.playlistmaker.R
 import com.elkabelaya.playlistmaker.databinding.ToolbarBinding
 
-open class FragmentWithToolBar: Fragment() {
+open class FragmentCloseable: Fragment() {
+    fun close() {
+        findNavController().navigateUp()
+    }
+}
+open class FragmentWithToolBar: FragmentCloseable() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,8 +46,6 @@ open class FragmentWithToolBar: Fragment() {
         }
     }
 
-    fun close() {
-        findNavController().navigateUp()
-    }
+
 
 }

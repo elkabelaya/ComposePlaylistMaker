@@ -3,6 +3,12 @@ package com.elkabelaya.playlistmaker.common.domain.mocks
 import com.elkabelaya.playlistmaker.common.domain.model.Playlist
 import com.elkabelaya.playlistmaker.common.domain.model.Track
 
+fun Playlist.Companion.emptyMock(): Playlist {
+    return Playlist(
+        1,
+        name = ""
+    )
+}
 fun Playlist.Companion.mock1(): Playlist {
     return Playlist(
         1,

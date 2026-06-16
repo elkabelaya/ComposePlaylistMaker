@@ -22,13 +22,17 @@ import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
 fun AppButton(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         colors = buttonColors(
-            containerColor = colorResource(id = R.color.bg_app_button_colors),
-            contentColor = colorResource(id = R.color.yp_white)
+            containerColor = colorResource(id = R.color.yp_blue),
+            contentColor = colorResource(id = R.color.yp_white),
+            disabledContainerColor = colorResource(id = R.color.yp_text_gray),
+            disabledContentColor = colorResource(id = R.color.yp_white),
         ),
         shape = RoundedCornerShape(
             dimensionResource(id = R.dimen.radius_xs)
@@ -55,6 +59,7 @@ fun AppButton(
 fun AppButtonPreview() {
     Column {
         AppButton("Some text", {})
+        AppButton("Some text", {}, enabled = false)
     }
 
 }

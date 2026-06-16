@@ -17,12 +17,13 @@ import com.elkabelaya.playlistmaker.common.presentation.components.TopAppBar
 import com.elkabelaya.playlistmaker.search.presentation.SearchViewModel
 
 @Composable
-fun AppScreen(@StringRes title:  Int, content: @Composable () -> Unit) {
+fun AppScreen(@StringRes title:  Int?, onBack: (() -> Unit)? = null, content: @Composable () -> Unit) {
     Scaffold(
         containerColor = AppTheme.colors.background,
         topBar = {
             TopAppBar(
-                stringResource(title)
+                if (title != null) stringResource(title) else "",
+                onBack
             )
         }
     ) { innerPadding ->
