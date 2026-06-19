@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.elkabelaya.playlistmaker.R
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
+import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
 
 @Composable
 fun ActionButton(
@@ -61,7 +62,7 @@ fun ActionButton(
     }
 }
 
-@Preview
+@AppPreview
 @Composable
 fun ActionButtonPreview() {
     ActionButton("Some text", {})

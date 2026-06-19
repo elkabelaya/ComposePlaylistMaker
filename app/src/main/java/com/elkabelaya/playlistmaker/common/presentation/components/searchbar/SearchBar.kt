@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.elkabelaya.playlistmaker.R
 import com.elkabelaya.playlistmaker.common.presentation.AppTheme
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
+import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
 
 @Composable
 fun SearchBar(
@@ -114,7 +115,7 @@ fun SearchBar(
 }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
+@AppPreview
 @Composable
 fun SearchScreenPreview() {
     Column {

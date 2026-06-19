@@ -2,6 +2,7 @@ package com.elkabelaya.playlistmaker.common.presentation.components.track
 
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,16 +34,29 @@ import com.elkabelaya.playlistmaker.common.domain.model.Track
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
 import com.elkabelaya.playlistmaker.common.presentation.Image
+import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
 
 
 @Composable
-fun TrackItem(track: Track, onClick: (Track) -> Unit) {
+fun TrackItem(
+    track: Track,
+    onClick: (Track) -> Unit,
+    onLongClick: ((Track) -> Unit)? = null
+) {
    Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(Dimens.listItemHeight)
             .padding(horizontal = Dimens.paddingS)
-            .clickable{onClick(track)},
+            .combinedClickable(
+               onClick = {
+                   onClick(track)
+               },
+               onLongClick = {
+                   onLongClick?.invoke(track)
+               }
+            )
+       ,
        verticalAlignment = Alignment.CenterVertically
     ) {
            AsyncImage(
@@ -111,10 +125,10 @@ fun TrackItem(track: Track, onClick: (Track) -> Unit) {
    }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_TYPE_NORMAL)
+@AppPreview
 @Composable
 fun TrackItemPreview(
     @PreviewParameter(TrackPreviewProvider::class) track: Track
 ) {
-    TrackItem(track) {}
+    TrackItem(track, {})
 }

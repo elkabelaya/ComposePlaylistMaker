@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.elkabelaya.playlistmaker.R
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
+import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
 
 @Composable
 fun AppButton(
@@ -54,7 +55,7 @@ fun AppButton(
     }
 }
 
-@Preview
+@AppPreview
 @Composable
 fun AppButtonPreview() {
     Column {

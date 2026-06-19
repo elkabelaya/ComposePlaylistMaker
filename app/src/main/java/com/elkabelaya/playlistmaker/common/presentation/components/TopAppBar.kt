@@ -12,6 +12,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -20,17 +21,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.elkabelaya.playlistmaker.R
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
+import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(title: String, onBack: (() -> Unit)? = null) {
+fun TopAppBar(
+    title: String,
+    containerColor: Color = colorResource( R.color.background),
+    titleColor: Color = colorResource(R.color.text_toolbar),
+    onBack: (() -> Unit)? = null) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = colorResource( R.color.background),
-            titleContentColor = colorResource(R.color.text_toolbar)
+            containerColor = containerColor,
+            titleContentColor = titleColor
         ),
         title = { Text(title,
-            color = colorResource(R.color.text_toolbar),
+            color = titleColor,
             fontSize = Dimens.textXL,
             fontFamily = appFontFamily,
             fontWeight = FontWeight.Medium,
@@ -40,7 +46,7 @@ fun TopAppBar(title: String, onBack: (() -> Unit)? = null) {
                 IconButton(onClick = { onBack() }) {
                     Icon(painterResource(R.drawable.ic_arrow_back),
                         contentDescription = null,
-                        tint = colorResource(R.color.text_toolbar)
+                        tint = titleColor
                     )
                 }
             }
@@ -50,11 +56,11 @@ fun TopAppBar(title: String, onBack: (() -> Unit)? = null) {
 }
 
 
-@Preview(uiMode = Configuration.UI_MODE_TYPE_NORMAL)
+@AppPreview
 @Composable
 fun TopAppBarPreview() {
     Column {
         TopAppBar("Поиск")
-        TopAppBar("Поиск", {})
+        TopAppBar("Поиск", Color.Gray, Color.Blue) {}
     }
 }

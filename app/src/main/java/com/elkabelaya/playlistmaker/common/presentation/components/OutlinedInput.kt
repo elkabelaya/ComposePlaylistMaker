@@ -45,6 +45,7 @@ import com.elkabelaya.playlistmaker.R
 import com.elkabelaya.playlistmaker.common.presentation.AppTheme
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
+import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
 
 @Composable
 fun OutlinedInput(
@@ -67,12 +68,7 @@ fun OutlinedInput(
         modifier = modifier
             .fillMaxWidth()
             .height(editTextHeight),
-        textStyle = TextStyle(
-            color = colorResource(id = R.color.text_title),
-            fontSize = Dimens.textM,
-            fontFamily = appFontFamily,
-            fontWeight = FontWeight.Normal,
-        ),
+        textStyle = AppTheme.typography.textMRegular,
         decorationBox = @Composable { innerTextField ->
             OutlinedTextFieldDefaults.DecorationBox(
                 value = value,
@@ -102,13 +98,14 @@ fun OutlinedInput(
     )
 }
 
-@Preview(name = "Light", showBackground = true)
-@Preview(name = "Dark", uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
+@AppPreview
 @Composable
 private fun OutlinedInputPreview () {
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        OutlinedInput("label", "") {}
-        OutlinedInput("label", "text1") {}
+    AppTheme {
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            OutlinedInput("label", "") {}
+            OutlinedInput("label", "text1") {}
+        }
     }
 }
 

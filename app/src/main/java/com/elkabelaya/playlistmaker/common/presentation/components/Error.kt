@@ -21,6 +21,7 @@ import com.elkabelaya.playlistmaker.common.domain.model.ErrorState
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
 import com.elkabelaya.playlistmaker.common.presentation.components.buttons.ActionButton
+import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
 
 enum class ErrorType {
     WIFI,
@@ -80,7 +81,7 @@ fun ComposeErrorView(state: ErrorState, onRefresh: (() -> Unit)? = null) {
 }
 
 
-@Preview
+@AppPreview
 @Composable
 fun ErrorPreview() {
     Column (Modifier.background(color = Color.White)){

@@ -18,6 +18,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.elkabelaya.playlistmaker.R
+import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
 
 @Composable
 fun ComposeSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
@@ -45,7 +46,7 @@ fun ComposeSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     }
 }
 
-@Preview
+@AppPreview
 @Composable
 fun ComposeSwitchPreview() {
     Column {

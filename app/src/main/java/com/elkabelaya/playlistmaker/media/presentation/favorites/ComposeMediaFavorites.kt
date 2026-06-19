@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.elkabelaya.playlistmaker.R
 import com.elkabelaya.playlistmaker.common.presentation.components.ComposeErrorView
 import com.elkabelaya.playlistmaker.common.presentation.components.track.TrackItemList
+import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
 import com.elkabelaya.playlistmaker.media.domain.model.MediaFavoritesState
 import com.elkabelaya.playlistmaker.media.presentation.preview.ComposeMediaFavoritesPreviewProvider
 import com.elkabelaya.playlistmaker.search.presentation.LoadingContent
@@ -30,7 +31,7 @@ fun ComposeMediaFavorites(viewModel: MediaFavoritesViewModel = koinViewModel()) 
                 LoadingContent()
             }
             is MediaFavoritesState.Data -> {
-                TrackItemList(state.tracks) { viewModel.select(it)}
+                TrackItemList(state.tracks,viewModel::select)
             }
             is MediaFavoritesState.Error -> {
                 ComposeErrorView(state.errorState)
@@ -40,7 +41,7 @@ fun ComposeMediaFavorites(viewModel: MediaFavoritesViewModel = koinViewModel()) 
 
 }
 
-@Preview
+@AppPreview
 @Composable
 fun ComposeMediaFavoritesPreview (
     @PreviewParameter(ComposeMediaFavoritesPreviewProvider::class) model: MediaFavoritesViewModel

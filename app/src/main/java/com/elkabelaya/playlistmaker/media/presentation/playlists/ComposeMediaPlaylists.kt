@@ -38,6 +38,7 @@ import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
 import com.elkabelaya.playlistmaker.common.presentation.components.ComposeErrorView
 import com.elkabelaya.playlistmaker.common.presentation.components.buttons.ActionButton
+import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
 import com.elkabelaya.playlistmaker.media.domain.model.MediaPlaylistsState
 import com.elkabelaya.playlistmaker.media.presentation.preview.ComposeMediaPlaylistsPreviewProvider
 import com.elkabelaya.playlistmaker.search.presentation.LoadingContent
@@ -85,9 +86,9 @@ fun ComposeMediaPlaylists(viewModel: MediaPlaylistsViewModel = koinViewModel()) 
 }
 
 @Composable
-fun PlaylistCard(
+private fun PlaylistCard(
     playlist: Playlist,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -135,7 +136,7 @@ fun PlaylistCard(
     }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
+@AppPreview
 @Composable
 fun ComposeMediaPlaylistsPreview(
     @PreviewParameter(ComposeMediaPlaylistsPreviewProvider::class) model: MediaPlaylistsViewModel

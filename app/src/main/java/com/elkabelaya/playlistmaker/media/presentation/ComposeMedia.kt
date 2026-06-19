@@ -27,6 +27,7 @@ import com.elkabelaya.playlistmaker.common.presentation.AppTheme
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
 import com.elkabelaya.playlistmaker.common.presentation.components.TopAppBar
+import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
 import com.elkabelaya.playlistmaker.media.presentation.favorites.ComposeMediaFavorites
 import com.elkabelaya.playlistmaker.media.presentation.playlists.ComposeMediaPlaylists
 import kotlinx.coroutines.launch
@@ -87,7 +88,7 @@ fun ComposeMedia() {
     }
 }
 
-@Preview
+@AppPreview
 @Composable
 fun ComposeMediaPreview() {
     AppTheme {

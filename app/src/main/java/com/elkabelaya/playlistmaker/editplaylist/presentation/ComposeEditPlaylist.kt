@@ -59,6 +59,7 @@ import com.elkabelaya.playlistmaker.common.presentation.AppTheme
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.components.OutlinedInput
 import com.elkabelaya.playlistmaker.common.presentation.components.buttons.AppButton
+import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
 import com.elkabelaya.playlistmaker.common.presentation.utils.dashedBorder
 import com.elkabelaya.playlistmaker.common.presentation.utils.showAppToast
 import com.elkabelaya.playlistmaker.editplaylist.domain.model.EditPlaylistMode
@@ -241,8 +242,7 @@ private fun Alert(confirm: () -> Unit, dismiss: ()-> Unit) {
         )
 }
 
-@Preview(name = "Light", showBackground = true)
-@Preview(name = "Dark", uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
+@AppPreview
 @Composable
 private fun ComposeEditPlaylistPreview(
     @PreviewParameter(ComposeEditPlaylistPreviewProvider::class) model: EditPlaylistViewModel

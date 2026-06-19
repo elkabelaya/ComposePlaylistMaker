@@ -22,6 +22,9 @@ import com.elkabelaya.playlistmaker.playlist.domain.model.PlaylistState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -33,25 +36,33 @@ class PlaylistViewModelImpl(
     initialPlaylist: Playlist
 ) : PlaylistViewModel() {
 
-    private val playlistState: LiveData<PlaylistState> = liveData {
-        combine(
-            playlistInteractor.getPlaylist(initialPlaylist),
-            playlistInteractor.getTracks(initialPlaylist)
-        ) { playlist, tracks ->
-            PlaylistState(playlist = playlist, tracks = tracks)
-        }
-        .flowOn(Dispatchers.IO)
-        .collect { combinedState ->
-            emit(combinedState)
+    private val _state: MutableStateFlow<PlaylistState> = MutableStateFlow(
+        PlaylistState(
+            initialPlaylist,
+            tracks = emptyList()
+        )
+    )
+    override val state: StateFlow<PlaylistState> = _state.asStateFlow()
+
+    private val _dialogState: MutableStateFlow<String?> = MutableStateFlow(null)
+    override val dialogState: StateFlow<String?> = _dialogState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            combine(
+                playlistInteractor.getPlaylist(initialPlaylist),
+                playlistInteractor.getTracks(initialPlaylist)
+            ) { playlist, tracks ->
+                PlaylistState(playlist = playlist, tracks = tracks)
+            }
+                .flowOn(Dispatchers.IO)
+                .collect { combinedState ->
+                    _state.value = combinedState
+                }
         }
     }
-    override fun observeState(): LiveData<PlaylistState> = playlistState
-
-    private val dialogState: SingleLiveData<String?> = SingleLiveData(null)
-    override fun observeDialogState(): LiveData<String?> = dialogState
-
     override fun onShare() {
-        playlistState.value?.let {
+        state.value.let {
 
             val result = playlistInteractor.getDescription(it.playlist, it.tracks )
 
@@ -60,7 +71,7 @@ class PlaylistViewModelImpl(
             }
 
             result.second?.let {
-                dialogState.postValue( it)
+                _dialogState.value =  it
             }
         }
     }
@@ -83,10 +94,6 @@ class PlaylistViewModelImpl(
     }
 
     override fun onEdit() {
-        playlistState.value?.playlist?.let {
-            navigatorInteractor.navigateToEdit(it)
-        }
+        navigatorInteractor.navigateToEdit(_state.value.playlist)
     }
-
-
 }

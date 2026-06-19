@@ -31,6 +31,7 @@ import com.elkabelaya.playlistmaker.common.presentation.components.TopAppBar
 import com.elkabelaya.playlistmaker.common.presentation.components.buttons.ActionButton
 import com.elkabelaya.playlistmaker.common.presentation.components.searchbar.SearchBar
 import com.elkabelaya.playlistmaker.common.presentation.components.track.TrackItemList
+import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
 import com.elkabelaya.playlistmaker.search.domain.model.SearchState
 import com.elkabelaya.playlistmaker.search.presentation.preview.ComposeSearchPreviewProvider
 
@@ -74,9 +75,8 @@ fun ComposeSearch(viewModel: SearchViewModel) {
                     LoadingContent()
                 }
                 is SearchState.Result  -> {
-                    TrackItemList((state as SearchState.Result).tracks){ track: Track ->
-                        viewModel.select(track)
-                    }
+                    TrackItemList((state as SearchState.Result).tracks, viewModel::select)
+
                 }
                 is SearchState.Error   -> {
                     ComposeErrorView((state as SearchState.Error).errorState)
@@ -120,7 +120,7 @@ fun LoadingContent() {
     }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
+@AppPreview
 @Composable
 fun ComposeSearchPreview(
     @PreviewParameter(ComposeSearchPreviewProvider::class) model: SearchViewModel

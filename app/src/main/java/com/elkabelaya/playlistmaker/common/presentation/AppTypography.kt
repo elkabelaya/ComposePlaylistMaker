@@ -15,17 +15,57 @@ val appFontFamily = FontFamily(
 )
 
 data class AppTypography (
-    val titleXLMedium: TextStyle, //Title Вы искали
+    val titleXLMedium: TextStyle,
+    val titleMMedium: TextStyle,
+    val titleXXLBold:TextStyle,
+    val textXSRegular: TextStyle,
+    val textMRegular: TextStyle,
+    val textXLRegular: TextStyle
 )
 
 fun getTypography(palette: ColorPalette): AppTypography {
     return AppTypography(
         titleXLMedium = TextStyle(
             fontFamily = appFontFamily,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight.Medium,
             fontSize = Dimens.textL,
             color = palette.textTitle,
             textAlign = TextAlign.Center //?
-        )
+        ),
+        titleMMedium = TextStyle(
+            fontFamily = appFontFamily,
+            fontWeight = FontWeight.Medium,
+            fontSize = Dimens.textM,
+            color = palette.text,
+            textAlign = TextAlign.Left
+        ),
+        titleXXLBold = TextStyle(
+            fontFamily = appFontFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = Dimens.textXXL,
+            color = palette.text,
+            textAlign = TextAlign.Left
+        ),
+        textXSRegular = TextStyle(
+            fontFamily = appFontFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = Dimens.textXS,
+            color = palette.textSecondary,
+            textAlign = TextAlign.Left
+        ),
+        textMRegular = TextStyle(
+            fontFamily = appFontFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = Dimens.textM,
+            color = palette.textTitle,
+            textAlign = TextAlign.Left
+        ),
+        textXLRegular = TextStyle(
+            fontFamily = appFontFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = Dimens.textXL,
+            color = palette.textSearch,
+            textAlign = TextAlign.Left
+        ),
     )
 }

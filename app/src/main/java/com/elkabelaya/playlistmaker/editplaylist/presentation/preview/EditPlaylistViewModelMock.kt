@@ -15,7 +15,7 @@ class EditPlaylistViewModelMock(state: EditPlaylistState,
                                 image: String?): EditPlaylistViewModel() {
 
 
-    override var state: StateFlow<EditPlaylistState> =
+    override val state: StateFlow<EditPlaylistState> =
         MutableStateFlow(state)
     override var mode: StateFlow<EditPlaylistMode> =
         MutableStateFlow(mode)

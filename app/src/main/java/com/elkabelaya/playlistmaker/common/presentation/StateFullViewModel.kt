@@ -8,5 +8,5 @@ interface StateFullViewModel<T> {
 }
 
 interface ComposeStateFullViewModel<T> {
-    var state: StateFlow<T>
+    val state: StateFlow<T>
 }

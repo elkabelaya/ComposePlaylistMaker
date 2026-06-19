@@ -1,10 +1,13 @@
 package com.elkabelaya.playlistmaker.common.presentation
 import androidx.compose.ui.graphics.Color
+import com.elkabelaya.playlistmaker.common.presentation.ypLightGray
 
 data class ColorPalette(
     val accent: Color,
     val background: Color,
     val backgroundSecondary: Color,
+    val backgroundTertiary: Color,
+    val backgroundQuaternary: Color,
     val textTitle: Color,
     val text: Color,
     val textSecondary: Color,
@@ -32,6 +35,8 @@ val lightPalette = ColorPalette(
     accent = ypBlue,
     background = Color.White,
     backgroundSecondary = ypLightGray,//background_search
+    backgroundTertiary = ypLightGray,
+    backgroundQuaternary = ypWhite,
     backgroundInverted = ypBlack,
     textTitle = ypBlack,//textToolbar
     text = Color.Black,
@@ -48,6 +53,8 @@ val darkPalette = ColorPalette(
     accent = ypBlue,
     background = ypBlack,
     backgroundSecondary = ypWhite,
+    backgroundTertiary = ypLightGray,
+    backgroundQuaternary = ypWhite,
     backgroundInverted = ypBlack,
     textTitle = ypWhite,
     text = ypWhite,
