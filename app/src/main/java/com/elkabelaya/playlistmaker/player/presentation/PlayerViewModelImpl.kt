@@ -1,6 +1,7 @@
 package com.elkabelaya.playlistmaker.player.presentation
 
 import android.util.Log
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -16,6 +17,9 @@ import com.elkabelaya.playlistmaker.player.domain.model.PlayerState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
@@ -24,21 +28,18 @@ class PlayerViewModelImpl(
     val favoritesInteractor: PlayerFavoriteInteractor,
     val playlistsInteractor: PlayerPlaylistsInteractor,
     val navigatorInteractor: PlayerNavigatorInteractor,
-    private val track: Track?
+    override val track: Track?
 ) : PlayerViewModel() {
-    private val playerStateLiveData: MutableLiveData<PlayerState> = MutableLiveData(PlayerState.Default(""))
-    override fun observeState(): LiveData<PlayerState> = playerStateLiveData
-
-    private val favoriteStateLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
-    override fun observeFavorite(): LiveData<Boolean> = favoriteStateLiveData
-
-    private val playlistsLiveData: MutableLiveData<Playlists> = MutableLiveData(emptyList())
-    override fun observePlaylists(): LiveData<Playlists> = playlistsLiveData
-
-    private val toastLiveData: SingleLiveData<String?> = SingleLiveData(null)
-    override fun observeToast(): SingleLiveData<String?> = toastLiveData
-
     private var timerJob: Job? = null
+
+    private val _playerState = MutableStateFlow<PlayerState>(PlayerState.Default(""))
+    override val state: StateFlow<PlayerState> = _playerState.asStateFlow()
+    private val _isFavorite = MutableStateFlow(false)
+    override var isFavorite: StateFlow<Boolean> = _isFavorite.asStateFlow()
+    private val _playlists = MutableStateFlow<Playlists>(emptyList())
+    override var playlists: StateFlow<Playlists> = _playlists.asStateFlow()
+    private val _toast = MutableStateFlow<String?>(null)
+    override var toast: StateFlow<String?> = _toast.asStateFlow()
 
     init {
         track?.let {
@@ -46,12 +47,12 @@ class PlayerViewModelImpl(
         }
         playerInteractor.onState{ state ->
             timerJob?.cancel()
-            playerStateLiveData.postValue(state)
+            _playerState.value = state
             if (state is PlayerState.Playing) {
                 timerJob = viewModelScope.launch(Dispatchers.IO) {
                     while (true) {
                         delay(PLAYER_DEBOUNCE_DELAY)
-                        playerStateLiveData.postValue(PlayerState.Playing(playerInteractor.time()))
+                        _playerState.value = PlayerState.Playing(playerInteractor.time())
                     }
                 }
             }
@@ -60,7 +61,7 @@ class PlayerViewModelImpl(
         viewModelScope.launch(Dispatchers.IO) {
             playlistsInteractor.get()
                 .collect {
-                    playlistsLiveData.postValue(it)
+                    _playlists.value = it
                 }
         }
     }
@@ -86,7 +87,7 @@ class PlayerViewModelImpl(
         track?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 val result = playlistsInteractor.add(it, playlist)
-                toastLiveData.postValue(result)
+                _toast.value = result
             }
 
         }
@@ -107,7 +108,7 @@ class PlayerViewModelImpl(
     private fun updateFavorite() {
         track?.let {
             viewModelScope.launch(Dispatchers.IO) {
-                favoriteStateLiveData.postValue(favoritesInteractor.isFavorite(track))
+                _isFavorite.value = favoritesInteractor.isFavorite(track)
             }
         }
     }

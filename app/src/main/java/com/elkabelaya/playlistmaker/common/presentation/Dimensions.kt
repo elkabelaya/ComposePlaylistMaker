@@ -54,6 +54,7 @@ object Dimens {
     @Px val iconWidth    = 40.dp
     @Px val iconHeight   = 36.dp
     @Px val listItemHeight = 60.dp
+    @Px val playlistItemHeight = 45.dp
 
 //    // ----------------------------------------------------------------------
 //    // Helper extensions – convert dp/sp to pixels at runtime

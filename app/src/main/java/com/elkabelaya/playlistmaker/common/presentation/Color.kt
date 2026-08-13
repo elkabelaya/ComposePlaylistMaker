@@ -8,6 +8,7 @@ data class ColorPalette(
     val backgroundSecondary: Color,
     val backgroundTertiary: Color,
     val backgroundQuaternary: Color,
+    val backgroundGray: Color,
     val textTitle: Color,
     val text: Color,
     val textSecondary: Color,
@@ -38,6 +39,7 @@ val lightPalette = ColorPalette(
     backgroundTertiary = ypLightGray,
     backgroundQuaternary = ypWhite,
     backgroundInverted = ypBlack,
+    backgroundGray = ypTextGray,
     textTitle = ypBlack,//textToolbar
     text = Color.Black,
     textSecondary = ypTextGray,
@@ -56,6 +58,7 @@ val darkPalette = ColorPalette(
     backgroundTertiary = ypLightGray,
     backgroundQuaternary = ypWhite,
     backgroundInverted = ypBlack,
+    backgroundGray = ypTextGray,
     textTitle = ypWhite,
     text = ypWhite,
     textSecondary = ypWhite,

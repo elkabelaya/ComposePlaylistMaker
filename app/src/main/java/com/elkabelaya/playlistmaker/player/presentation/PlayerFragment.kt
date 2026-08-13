@@ -1,76 +1,53 @@
 package com.elkabelaya.playlistmaker.player.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.elkabelaya.playlistmaker.R
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.Fragment
 import com.elkabelaya.playlistmaker.common.domain.model.Track
-import com.elkabelaya.playlistmaker.common.presentation.utils.FragmentWithToolBar
-import com.elkabelaya.playlistmaker.common.presentation.utils.setup
-import com.elkabelaya.playlistmaker.common.presentation.utils.showAppToast
-import com.elkabelaya.playlistmaker.databinding.FragmentPlayerBinding
+import com.elkabelaya.playlistmaker.common.presentation.AppTheme
 import com.elkabelaya.playlistmaker.player.di.playerModules
-import com.elkabelaya.playlistmaker.player.domain.model.PlayerState
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.context.GlobalContext.loadKoinModules
 import org.koin.core.context.GlobalContext.unloadKoinModules
 import org.koin.core.parameter.parametersOf
 
-class PlayerFragment : FragmentWithToolBar() {
-    private var _binding: FragmentPlayerBinding? = null
-    private val binding get() = _binding!!
-    private val adapter: PlayerPlaylistsAdapter
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
-    private val viewModel: PlayerViewModel by viewModel{
-        parametersOf(track)
-    }
+class PlayerFragment : Fragment() {
+
     private val track: Track? by lazy {
         requireArguments().getSerializable(INTENT_KEY) as? Track
     }
 
-    init {
-        adapter = PlayerPlaylistsAdapter() { item ->
-            viewModel.select(item)
-        }
+    private val viewModel: PlayerViewModel by viewModel {
+        parametersOf(track)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loadKoinModules(playerModules)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = FragmentPlayerBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupToolBar(resources.getString(R.string.empty_title), true, binding.toolbar)
-
-        track?.let {
-            setupTrack(it)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) = ComposeView(requireContext()).apply {
+        setContent {
+            AppTheme {
+                DisposableEffect(Unit) {
+                    onDispose {
+                        viewModel.onPause()
+                    }
+                }
+                ComposePlayer(
+                    viewModel = viewModel,
+                    onBack = { requireActivity().onBackPressedDispatcher.onBackPressed() }
+                )
+            }
         }
-
-        setupViewModel()
-        setupButtons()
-        setupList()
-        setupBottomSheet()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.onPause()
     }
 
     override fun onResume() {
@@ -81,111 +58,6 @@ class PlayerFragment : FragmentWithToolBar() {
     override fun onDestroy() {
         super.onDestroy()
         unloadKoinModules(playerModules)
-    }
-
-    fun setupViewModel() {
-        viewModel.observeState().observe(viewLifecycleOwner) {
-            when (it){
-                is PlayerState.Default -> {
-                    binding.playView.isEnabled = false
-                    binding.timeView.text = it.time
-                    binding.playView.setState(PlaybackButtonView.State.PLAY)
-                }
-                is PlayerState.Prepared -> {
-                    binding.playView.isEnabled = true
-                    binding.timeView.text = it.time
-                    binding.playView.setState(PlaybackButtonView.State.PLAY)
-                }
-                is PlayerState.Playing -> {
-                    binding.timeView.text = it.time
-                    binding.playView.setState(PlaybackButtonView.State.PAUSE)
-                }
-                is PlayerState.Paused -> {
-                    binding.timeView.text = it.time
-                    binding.playView.setState(PlaybackButtonView.State.PLAY)
-                }
-            }
-        }
-
-        viewModel.observeFavorite().observe(viewLifecycleOwner) {
-            binding.favoriteView.setImageResource(if (it == true ) R.drawable.ic_player_heart_fill else R.drawable.ic_player_heart_stroke)
-        }
-
-        viewModel.observePlaylists().observe(viewLifecycleOwner) {
-            adapter.playlists = it
-            adapter.notifyDataSetChanged()
-        }
-
-        viewModel.observeToast().observe(viewLifecycleOwner) {
-            it?.let {
-                hideBottomSheet()
-                showAppToast(requireContext(), it)
-            }
-        }
-    }
-    fun setupTrack(track: Track) {
-        Glide.with(binding.imageView)
-            .load(track.coverUrl)
-            .placeholder(R.drawable.bg_placeholder)
-            .centerCrop()
-            .transform(RoundedCorners(binding.imageView.resources.getDimensionPixelSize(R.dimen.radius_m)))
-            .into(binding.imageView)
-
-        setTextOrHide(null, binding.title,track.trackName)
-        setTextOrHide(null, binding.artist, track.artistName)
-        setTextOrHide(binding.durationLabel, binding.duration, track.trackTime)
-        setTextOrHide(binding.albumLabel, binding.album, track.collectionName)
-        setTextOrHide(binding.yearLabel, binding.year, track.year)
-        setTextOrHide(binding.genreLabel, binding.genre, track.primaryGenreName)
-        setTextOrHide(binding.countryLabel, binding.country, track.country)
-    }
-
-    fun setupButtons() {
-        binding.playView.isEnabled = false
-        binding.playView.onStateChanged = { state ->
-            viewModel.togglePlay()
-        }
-
-        binding.favoriteView.setOnClickListener {
-            viewModel.toggleFavorite()
-        }
-
-        binding.addView.setOnClickListener {
-            openBottomSheet()
-        }
-
-    }
-
-    private fun setupList() {
-        binding.playlists.layoutManager = LinearLayoutManager(requireContext())
-        binding.playlists.adapter = adapter
-    }
-    fun setupBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
-        setup(bottomSheetBehavior,  binding.bottomSheetHandle.button, binding.overlay.overlay)
-
-        binding.createButton.setOnClickListener {
-            viewModel.createPlaylist()
-        }
-    }
-
-    private fun hideBottomSheet() {
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-    }
-
-    private fun openBottomSheet() {
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-    }
-
-    fun setTextOrHide(labelView: TextView?, view: TextView, value: String?) {
-        if (value?.trim()?.isNotEmpty() == true) {
-            view.text = value
-        } else {
-            if (labelView != null) {
-                labelView.visibility = View.GONE
-            }
-            view.visibility = View.GONE
-        }
     }
 
     companion object {

@@ -1,5 +1,6 @@
 package com.elkabelaya.playlistmaker.common.presentation.components.buttons
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,14 @@ import com.elkabelaya.playlistmaker.R
 import com.elkabelaya.playlistmaker.common.presentation.Dimens
 import com.elkabelaya.playlistmaker.common.presentation.appFontFamily
 import com.elkabelaya.playlistmaker.common.presentation.utils.AppPreview
+
+@Composable
+fun ActionButton(
+    @StringRes textId: Int,
+    onClick: () -> Unit
+) {
+    ActionButton(stringResource(textId), onClick)
+}
 
 @Composable
 fun ActionButton(

@@ -10,6 +10,7 @@ android {
     namespace = "com.elkabelaya.playlistmaker"
     compileSdk = 36
 
+
     defaultConfig {
         applicationId = "com.elkabelaya.playlistmaker"
         minSdk = 33
